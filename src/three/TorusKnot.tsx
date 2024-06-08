@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import * as THREE from "three";
 import type { IInitialParameters, ISize } from "./Scene.tsx";
-import * as dat from "dat.gui";
 import gsap from "gsap";
 
 interface IProps {
@@ -66,28 +65,8 @@ function TorusKnot(props: IProps) {
   directionalLight.position.set(1, 1, 0);
   scene.add(directionalLight);
 
-  //Tweak
-  const gui = new dat.GUI();
-  const addTweaks = (
-    name: keyof IParameters,
-    min: number,
-    max: number,
-    step: number,
-  ): void => {
-    gui.add(parameters, name, min, max, step).onFinishChange(generateGeometry);
-  };
-
   useEffect(() => {
-    //(0.8, 0.35, 100, 16)
     generateGeometry();
-    /*
-    addTweaks("tube", 0.1, 1, 0.0001);
-    addTweaks("radius", 0.1, 5, 0.001);
-    addTweaks("tubularSegments", 1, 100, 1);
-    addTweaks("radialSegments", 1, 100, 1);
-
-     */
-
     const tick = () => {
       requestAnimationFrame(tick);
       mesh.rotation.x += 0.01;

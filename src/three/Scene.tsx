@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import * as THREE from "three";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Particles from "./Particles.tsx";
@@ -95,7 +96,7 @@ function Scene() {
   //mouse
 
   const mousePosition = { x: 0, y: 0 };
-  const updateMousePosition = (event) => {
+  const updateMousePosition = (event: any) => {
     mousePosition.x = event.clientX / size.width - 0.5;
     mousePosition.y = event.clientY / size.height - 0.5;
   };
