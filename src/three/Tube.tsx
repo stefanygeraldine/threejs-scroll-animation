@@ -86,7 +86,7 @@ function TorusKnot(props: IProps) {
     tick();
   }, []);
 
-  return <div></div>;
+  return <></>;
 }
 
 export default TorusKnot;

@@ -18,6 +18,7 @@ export interface IInitialParameters {
   objectDistance: number;
   material?: THREE.MeshToonMaterial;
   texture?: THREE.Texture;
+  currentSection: number;
 }
 
 const scene = new THREE.Scene();
@@ -29,7 +30,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setClearAlpha(0);
 //renderer.setClearColor("#778899");
 // Base camera
-
+document.body.appendChild(renderer.domElement);
 const groupCamera = new THREE.Group();
 scene.add(groupCamera);
 const camera = new THREE.PerspectiveCamera(
@@ -44,7 +45,8 @@ groupCamera.add(camera);
 
 const parameters: IInitialParameters = {
   materialColor: "#445567",
-  objectDistance: 4,
+  objectDistance: 5,
+  currentSection: 0,
 };
 
 parameters.material = new THREE.MeshToonMaterial({
@@ -58,12 +60,11 @@ gradienTexture.magFilter = THREE.NearestFilter;
 parameters.texture = gradienTexture;
 
 function Scene() {
-  document.body.appendChild(renderer.domElement);
   const [size, setSize] = useState<ISize>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
-
+  console.log("render");
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
 
@@ -82,10 +83,13 @@ function Scene() {
     });
   }, []);
   let scrollY: number = 0;
-
   const updateScrollPositions = () => {
     scrollY = window.scrollY;
-    console.log(scrollY);
+    const newSection = Math.round(scrollY / size.height);
+
+    if (newSection != parameters.currentSection) {
+      parameters.currentSection = newSection;
+    }
   };
 
   //mouse
@@ -94,7 +98,6 @@ function Scene() {
   const updateMousePosition = (event) => {
     mousePosition.x = event.clientX / size.width - 0.5;
     mousePosition.y = event.clientY / size.height - 0.5;
-    console.log(mousePosition);
   };
 
   useEffect(() => {
@@ -117,19 +120,21 @@ function Scene() {
   let previousTime = 0;
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
-    const deltaTime = elapsedTime - previousTime;
-    previousTime = deltaTime;
+    const normalizeTimeDevice = elapsedTime - previousTime;
+    previousTime = elapsedTime;
 
-    requestAnimationFrame(tick);
     camera.position.y = (-scrollY / size.height) * parameters.objectDistance;
 
     //parallax
+    const parallaxX = mousePosition.x;
+    const parallaxY = -mousePosition.y;
+    const smoothSpeed = 5;
     groupCamera.position.x +=
-      (mousePosition.x - groupCamera.position.x) * 0.2 * deltaTime;
+      (parallaxX - groupCamera.position.x) * smoothSpeed * normalizeTimeDevice;
     groupCamera.position.y +=
-      -mousePosition.y - groupCamera.position.y * 0.2 * deltaTime;
-
+      (parallaxY - groupCamera.position.y) * smoothSpeed * normalizeTimeDevice;
     renderer.render(scene, camera);
+    requestAnimationFrame(tick);
   };
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import * as THREE from "three";
 import type { IInitialParameters, ISize } from "./Scene.tsx";
 import * as dat from "dat.gui";
+import gsap from "gsap";
 
 interface IProps {
   renderer: THREE.WebGLRenderer;
@@ -27,9 +28,11 @@ const parameters: IParameters = {
 
 function TorusKnot(props: IProps) {
   const { scene, initialParameters } = props;
-  const { texture, objectDistance, materialColor } = initialParameters;
+  const { texture, objectDistance, materialColor, currentSection } =
+    initialParameters;
 
   let mesh: THREE.Mesh;
+
   const generateGeometry = (): void => {
     const { radius, tube, radialSegments, tubularSegments } = parameters;
     const geometry = new THREE.ConeGeometry(
@@ -46,12 +49,22 @@ function TorusKnot(props: IProps) {
     mesh = new THREE.Mesh(geometry, material);
     mesh.position.y = -objectDistance;
     mesh.scale.set(0.5, 0.5, 0.5);
-    scene.add(mesh);
 
-    const directionalLight = new THREE.DirectionalLight("#ffffff", 3);
-    directionalLight.position.set(1, 1, 0);
-    scene.add(directionalLight);
+    //gsap
+    if (currentSection === 2) {
+      gsap.to(mesh.rotation, {
+        duration: 1.5,
+        ease: "power2.inOut",
+        x: "+=6",
+        y: "+=3",
+      });
+    }
+    scene.add(mesh);
   };
+
+  const directionalLight = new THREE.DirectionalLight("#ffffff", 3);
+  directionalLight.position.set(1, 1, 0);
+  scene.add(directionalLight);
 
   //Tweak
   const gui = new dat.GUI();
@@ -83,7 +96,7 @@ function TorusKnot(props: IProps) {
     tick();
   }, []);
 
-  return <div></div>;
+  return <></>;
 }
 
 export default TorusKnot;

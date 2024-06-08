@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
-import * as dat from "dat.gui";
 import { ISize } from "./Scene.tsx";
 
 interface IProps {
@@ -26,7 +22,6 @@ interface IParameters {
 }
 
 function Galaxy(props: IProps) {
-  //const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scene } = props;
 
   //Parameters
@@ -109,37 +104,11 @@ function Galaxy(props: IProps) {
     scene.add(points);
   };
 
-  //Tweak
-  const gui = new dat.GUI();
-  const addTweaks = (
-    name: keyof IParameters,
-    min: number,
-    max: number,
-    step: number,
-  ): void => {
-    gui.add(parameters, name, min, max, step).onFinishChange(generateGalaxy);
-  };
-
-  const addColor = (name: keyof IParameters): void => {
-    gui.addColor(parameters, name).onFinishChange(generateGalaxy);
-  };
-
   useEffect(() => {
     generateGalaxy();
-    /*
-    addTweaks("count", 100, 1000000, 100);
-    addTweaks("size", 0.001, 0.1, 0.001);
-    addTweaks("radius", 0.01, 20, 0.01);
-    addTweaks("branches", 1, 20, 1);
-    addTweaks("spin", -5, 5, 0.001);
-    addTweaks("randomness", 0, 2, 0.001);
-    addTweaks("randomnessPower", 1, 10, 0.001);
-    addColor("insideColor");
-    addColor("outsideColor");
-     */
   }, []);
 
-  return <div></div>;
+  return <></>;
 }
 
 export default Galaxy;
