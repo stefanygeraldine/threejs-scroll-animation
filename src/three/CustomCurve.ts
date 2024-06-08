@@ -1,13 +1,15 @@
-// src/CustomSinCurve.js
+// src/CustomSinCurve.ts
 import * as THREE from "three";
 
-class CustomSinCurve extends THREE.Curve {
-  constructor(scale = 1) {
+class CustomSinCurve extends THREE.Curve<THREE.Vector3> {
+  scale: number;
+
+  constructor(scale: number = 1) {
     super();
     this.scale = scale;
   }
 
-  getPoint(t) {
+  getPoint(t: number): THREE.Vector3 {
     const tx = t * 3 - 1.5;
     const ty = Math.sin(2 * Math.PI * t);
     const tz = 0;

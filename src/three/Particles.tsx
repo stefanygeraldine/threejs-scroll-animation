@@ -1,10 +1,6 @@
 import { useEffect } from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
 import { type IInitialParameters, ISize } from "./Scene.tsx";
-import Particle from "../assets/materials/blackBackground/magic_01.png";
 
 interface IProps {
   renderer: THREE.WebGLRenderer;
@@ -15,7 +11,6 @@ interface IProps {
 }
 
 function Particles(props: IProps) {
-  //const canvasRef = useRef<HTMLCanvasElement>(null);
   const { initialParameters, scene } = props;
   const { objectDistance, materialColor } = initialParameters;
 
