@@ -16,17 +16,13 @@ interface IProps {
 
 function Particles(props: IProps) {
   //const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { renderer, scene, camera, size, initialParameters } = props;
-  const { objectDistance } = initialParameters;
-
-  // Controls
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
+  const { initialParameters, scene } = props;
+  const { objectDistance, materialColor } = initialParameters;
 
   useEffect(() => {
     // Particle
     const particlesGeometry = new THREE.BufferGeometry();
-    const count = 5000;
+    const count = 200;
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count * 3; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 10;
@@ -39,28 +35,14 @@ function Particles(props: IProps) {
       new THREE.BufferAttribute(positions, 3),
     );
 
-    const textureLoader = new THREE.TextureLoader();
-    const particuleTexture = textureLoader.load(Particle);
-
-    const particlesMaterial = new THREE.PointsMaterial();
-    particlesMaterial.size = 0.1;
-    particlesMaterial.sizeAttenuation = true;
-    particlesMaterial.color = new THREE.Color("#ff88cc");
-    particlesMaterial.transparent = true;
-    particlesMaterial.alphaMap = particuleTexture;
-    particlesMaterial.depthWrite = false;
-    particlesMaterial.blending = THREE.AdditiveBlending;
-    particlesMaterial.vertexColors = true;
+    const particlesMaterial = new THREE.PointsMaterial({
+      color: materialColor,
+      sizeAttenuation: true,
+      size: 0.03,
+    });
 
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
-
-    const tick = () => {
-      requestAnimationFrame(tick);
-      renderer.render(scene, camera);
-    };
-
-    tick();
   }, []);
 
   return <div></div>;

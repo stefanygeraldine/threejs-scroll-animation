@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import * as THREE from "three";
+// @ts-expect-error
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Particles from "./Particles.tsx";
 import Galaxy from "./Galaxy.tsx";
 import TorusKnot from "./TorusKnot.tsx";
@@ -56,10 +58,14 @@ gradienTexture.magFilter = THREE.NearestFilter;
 parameters.texture = gradienTexture;
 
 function Scene() {
+  document.body.appendChild(renderer.domElement);
   const [size, setSize] = useState<ISize>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
 
   const updateSize = useCallback(() => {
     // Update camera
@@ -76,6 +82,7 @@ function Scene() {
     });
   }, []);
   let scrollY: number = 0;
+
   const updateScrollPositions = () => {
     scrollY = window.scrollY;
     console.log(scrollY);
@@ -87,8 +94,13 @@ function Scene() {
   const updateMousePosition = (event) => {
     mousePosition.x = event.clientX / size.width - 0.5;
     mousePosition.y = event.clientY / size.height - 0.5;
-    console.log(scrollY);
+    console.log(mousePosition);
   };
+
+  useEffect(() => {
+    renderer.setSize(size.width, size.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  }, [size.width, size.height]);
 
   useEffect(() => {
     window.addEventListener("resize", updateSize);
@@ -101,22 +113,26 @@ function Scene() {
     };
   }, []);
 
+  const clock = new THREE.Clock();
+  let previousTime = 0;
+  const tick = () => {
+    const elapsedTime = clock.getElapsedTime();
+    const deltaTime = elapsedTime - previousTime;
+    previousTime = deltaTime;
+
+    requestAnimationFrame(tick);
+    camera.position.y = (-scrollY / size.height) * parameters.objectDistance;
+
+    //parallax
+    groupCamera.position.x +=
+      (mousePosition.x - groupCamera.position.x) * 0.2 * deltaTime;
+    groupCamera.position.y +=
+      -mousePosition.y - groupCamera.position.y * 0.2 * deltaTime;
+
+    renderer.render(scene, camera);
+  };
+
   useEffect(() => {
-    const clock = new THREE.Clock();
-    let previousTime = 0;
-    const tick = () => {
-      const elapsedTime = clock.getElapsedTime();
-      const deltaTime = elapsedTime - previousTime;
-      previousTime = deltaTime;
-
-      requestAnimationFrame(tick);
-      camera.position.y = (-scrollY / size.height) * parameters.objectDistance;
-
-      groupCamera.position.x +=
-        (mousePosition.x - groupCamera.position.x) * 0.2 * deltaTime;
-      groupCamera.position.y +=
-        -mousePosition.y - groupCamera.position.y * 0.2 * deltaTime;
-    };
     tick();
   }, []);
 

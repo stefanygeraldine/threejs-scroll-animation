@@ -21,7 +21,7 @@ interface IParameters {
 }
 
 function TorusKnot(props: IProps) {
-  const { renderer, scene, camera, size, initialParameters } = props;
+  const { scene, initialParameters } = props;
   const { texture, objectDistance, materialColor } = initialParameters;
 
   const parameters: IParameters = {
@@ -31,9 +31,7 @@ function TorusKnot(props: IProps) {
     radialSegments: 16,
     path: new CustomSinCurve(10),
   };
-  renderer.setSize(size.width, size.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  document.body.appendChild(renderer.domElement);
+
   let mesh: THREE.Mesh;
   const generateGeometry = (): void => {
     const { radius, tube, radialSegments, tubularSegments } = parameters;
@@ -70,19 +68,20 @@ function TorusKnot(props: IProps) {
   };
 
   useEffect(() => {
-    camera.position.z = 5;
     //(0.8, 0.35, 100, 16)
     generateGeometry();
+    /*
     addTweaks("tube", 0.1, 1, 0.0001);
     addTweaks("radius", 0.1, 5, 0.001);
     addTweaks("tubularSegments", 1, 100, 1);
     addTweaks("radialSegments", 1, 100, 1);
 
+     */
+
     const tick = () => {
       requestAnimationFrame(tick);
       mesh.rotation.x += 0.01;
       mesh.rotation.y += 0.01;
-      renderer.render(scene, camera);
     };
     tick();
   }, []);

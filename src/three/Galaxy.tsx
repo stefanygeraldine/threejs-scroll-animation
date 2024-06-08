@@ -27,14 +27,7 @@ interface IParameters {
 
 function Galaxy(props: IProps) {
   //const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { renderer, scene, camera, size } = props;
-  renderer.setSize(size.width, size.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  document.body.appendChild(renderer.domElement);
-
-  // Controls
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
+  const { scene } = props;
 
   //Parameters
 
@@ -112,6 +105,7 @@ function Galaxy(props: IProps) {
     // Points
     points = new THREE.Points(geometry, material);
     points.position.y = 0;
+    points.rotation.x = 0.5;
     scene.add(points);
   };
 
@@ -132,6 +126,7 @@ function Galaxy(props: IProps) {
 
   useEffect(() => {
     generateGalaxy();
+    /*
     addTweaks("count", 100, 1000000, 100);
     addTweaks("size", 0.001, 0.1, 0.001);
     addTweaks("radius", 0.01, 20, 0.01);
@@ -141,14 +136,7 @@ function Galaxy(props: IProps) {
     addTweaks("randomnessPower", 1, 10, 0.001);
     addColor("insideColor");
     addColor("outsideColor");
-
-    points.rotation.x = 0.5;
-    const tick = () => {
-      requestAnimationFrame(tick);
-      //points.rotation.y += 0.001;
-      renderer.render(scene, camera);
-    };
-    tick();
+     */
   }, []);
 
   return <div></div>;
