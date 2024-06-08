@@ -1,30 +1,31 @@
-# React + TypeScript + Vite
+# Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [https://stefanygeraldine.github.io/threejs-scroll-animation/](https://stefanygeraldine.github.io/threejs-scroll-animation/)
 
-## Expanding the ESLint configuration
+![Project Screenshot](public/img_1.png)
+# React Three.js Scroll Animations and Parallax Effects
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This project is a modern web application built with React and Vite, incorporating Three.js for 3D graphics. The application leverages scroll animations and parallax effects to create an engaging and interactive user experience.
 
-- Configure the top-level `parserOptions` property like this:
+## Technologies Used
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **React**: A JavaScript library for building user interfaces, facilitating the creation of reusable UI components.
+- **Vite**: A build tool that provides a faster and leaner development experience for modern web projects.
+- **Three.js**: A JavaScript library for creating and displaying animated 3D graphics in the browser.
+- **GSAP (GreenSock Animation Platform)**: A powerful library for creating high-performance animations.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Key Features
+
+1. **3D Graphics with Three.js**
+    - Integration of Three.js to render 3D models and scenes.
+    - Utilization of WebGL for high-performance graphics rendering.
+
+2. **Scroll Animations**
+    - Implementation of smooth scroll animations using GSAP.
+    - Triggering animations based on the user's scroll position for dynamic content presentation.
+
+3. **Parallax Effects**
+    - Creation of parallax scrolling effects to provide depth and a more immersive browsing experience.
+    - Use of layered images and content that move at different speeds when scrolling.
